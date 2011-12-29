@@ -47,8 +47,9 @@
       </div>
 
       <!-- Example row of columns -->
-      <div id="gateway-content" class="row">
-
+      <div id="gateway-content">
+        <ul id="gateway-photos" class="media-grid">
+        </ul>
       </div>
 
       <footer>
@@ -60,13 +61,14 @@
     <!-- Templates -->
 
     <script type="text/template" id="photo-gateway-template">
-        <div class="span5">
-          <h2><%= photo.get('title') %></h2>
+        <li>
+        <!-- <h2><%= photo.get('title') %></h2> -->
+            <div class="gateway-photo-container">
           <a href="http://www.flickr.com/photos/cavenagh/<%= photo.get('id') %>">
-            <img class="thumbnail" src="<%= photo.get('url_s') %>" alt="<%- photo.get('title') %>"/>
+              <img class="thumbnail" width="180" src="<%= photo.get('url_s') %>" alt="<%- photo.get('title') %>"/>
           </a>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
+            </div>
+        </li>
     </script>
 
 

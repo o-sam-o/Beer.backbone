@@ -1,3 +1,13 @@
 body {
   padding-top: 60px;
 }
+
+#gateway-photos {
+  margin-left: 40px;
+}
+
+.gateway-photo-container {
+  height: 270px;
+  overflow: hidden;
+  float: left;
+}

@@ -46,8 +46,8 @@ $(function(){
     render: function() {
       console.log("Render Gateway View");
       var template = _.template($('#photo-gateway-template').html());
-      _.each(Photos.models.slice(0,3), function(photo){
-        this.$('#gateway-content').append(template({
+      Photos.each(function(photo){
+        this.$('#gateway-photos').append(template({
           photo: photo
         }));
       });
