@@ -26,6 +26,7 @@ $(function(){
     parse: function(response) {
       this.attributes.details_loaded = true;
       this.attributes.description = response.photo.description._content;
+      this.attributes.taken = new Date(response.photo.dates.taken);
 
       return this.attributes
     },

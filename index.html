@@ -81,6 +81,9 @@
       <p>
         <strong>Description:</strong> <%- photo.get('description') ? photo.get('description') : '-' %>
       </p>
+      <p>
+        <strong>Added:</strong>  <%- photo.get('taken').toLocaleTimeString() %> <%- photo.get('taken').toLocaleDateString() %>
+      </p>
     </script>
 
     <script type="text/template" id="spinner-template">
