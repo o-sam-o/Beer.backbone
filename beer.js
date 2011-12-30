@@ -46,10 +46,20 @@ $(function(){
     render: function() {
       console.log("Render Gateway View");
       var template = _.template($('#photo-gateway-template').html());
-      Photos.each(function(photo){
+      Photos.each(function(photo, index){
         this.$('#gateway-photos').append(template({
-          photo: photo
+          photo: photo,
+          index: index
         }));
+      });
+
+      this.$("a[rel=photoPopover]")
+        .popover({
+          offset: 10,
+          html: true,
+          content: function() {
+            return $('#spinner-template').html();
+          }
       });
 
       return this;

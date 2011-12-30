@@ -14,11 +14,14 @@
 
     <!-- Le styles -->
     <link href="lib/bootstrap.css" rel="stylesheet">
+    <link href="lib/spinner.css" rel="stylesheet">
     <link href="beer.css" rel="stylesheet">
 
     <script src="lib/jquery-1.7.1.js"></script>
     <script src="lib/underscore.js"></script>
     <script src="lib/backbone.js"></script>
+    <script src="lib/bootstrap-twipsy.js"></script>
+    <script src="lib/bootstrap-popover.js"></script>
     <script src="beer.js"></script>
   </head>
 
@@ -53,7 +56,7 @@
       </div>
 
       <footer>
-        <p>&copy; Company 2011</p>
+        <p>&copy; Company 2012</p>
       </footer>
 
     </div> <!-- /container -->
@@ -62,13 +65,34 @@
 
     <script type="text/template" id="photo-gateway-template">
         <li>
-        <!-- <h2><%= photo.get('title') %></h2> -->
-            <div class="gateway-photo-container">
-          <a href="http://www.flickr.com/photos/cavenagh/<%= photo.get('id') %>">
+          <div class="gateway-photo-container">
+            <a href="http://www.flickr.com/photos/cavenagh/<%= photo.get('id') %>" 
+              title="<%- photo.get('title') %>" 
+              rel="photoPopover"
+              data-placement="<%= (index + 1) % 4 ? 'right' : 'left' %>">
               <img class="thumbnail" width="180" src="<%= photo.get('url_s') %>" alt="<%- photo.get('title') %>"/>
-          </a>
-            </div>
+            </a>
+          </div>
         </li>
+    </script>
+
+    <script type="text/template" id="spinner-template">
+      <div class="centre-spinner">
+        <div class="spinner" style="width: 34px; height: 34px">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+          <div class="bar4"></div>
+          <div class="bar5"></div>
+          <div class="bar6"></div>
+          <div class="bar7"></div>
+          <div class="bar8"></div>
+          <div class="bar9"></div>
+          <div class="bar10"></div>
+          <div class="bar11"></div>
+          <div class="bar12"></div>
+        </div>
+      </div>
     </script>
 
 

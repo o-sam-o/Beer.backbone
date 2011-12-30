@@ -6,8 +6,16 @@ body {
   margin-left: 40px;
 }
 
+.gateway-photo-container a {
+  max-height: 240px;
+  overflow: hidden;
+}
+
 .gateway-photo-container {
   height: 270px;
-  overflow: hidden;
   float: left;
+}
+
+.centre-spinner {
+  margin-left: 110px;
 }
