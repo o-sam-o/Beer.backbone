@@ -69,6 +69,7 @@
             <a href="http://www.flickr.com/photos/cavenagh/<%= photo.get('id') %>" 
               title="<%- photo.get('title') %>" 
               rel="photoPopover"
+              data-photo-id="<%= photo.id %>"
               data-placement="<%= (index + 1) % 4 ? 'right' : 'left' %>">
               <img class="thumbnail" width="180" src="<%= photo.get('url_s') %>" alt="<%- photo.get('title') %>"/>
             </a>
@@ -76,8 +77,14 @@
         </li>
     </script>
 
+    <script type="text/template" id="photo-popover-content">
+      <p>
+        <strong>Description:</strong> <%- photo.get('description') ? photo.get('description') : '-' %>
+      </p>
+    </script>
+
     <script type="text/template" id="spinner-template">
-      <div class="centre-spinner">
+      <div class="centre-spinner" id="<%= spinnerId %>">
         <div class="spinner" style="width: 34px; height: 34px">
           <div class="bar1"></div>
           <div class="bar2"></div>
