@@ -24,9 +24,23 @@ $(function(){
     },
 
     parse: function(response) {
-      this.attributes.details_loaded = true;
+      this.set({details_loaded: true});
       this.attributes.description = response.photo.description._content;
       this.attributes.taken = new Date(response.photo.dates.taken);
+
+      if (response.photo.location) {
+        var raw_loc = response.photo.location;
+        this.attributes.location = raw_loc.locality._content + " " + raw_loc.country._content;
+      }
+
+      // Based on naming convention of photo title
+      if (this.get('title').match(/\-/)){
+        var split_title = this.get('title').split(/\-/);
+        this.set({
+          brewer: split_title[0],
+          beer_type: split_title[1]
+        });
+      }
 
       return this.attributes
     },
