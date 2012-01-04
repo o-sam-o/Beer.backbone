@@ -7,6 +7,7 @@ $(function(){
 
     photoPopoverTemplate: _.template($('#photo-popover-content').html()),
     spinnerTemplate: _.template($('#spinner-template').html()),
+    photoModelBodyTemplate: _.template($('#show-photo-modal-body-template').html()),
 
     url: function(){
       var params = {
@@ -24,13 +25,17 @@ $(function(){
     },
 
     parse: function(response) {
-      this.set({details_loaded: true});
-      this.attributes.description = response.photo.description._content;
-      this.attributes.taken = new Date(response.photo.dates.taken);
+      this.set({
+        details_loaded: true,
+        description: response.photo.description._content,
+        taken: new Date(response.photo.dates.taken)
+      });
 
       if (response.photo.location) {
         var raw_loc = response.photo.location;
-        this.attributes.location = raw_loc.locality._content + " " + raw_loc.country._content;
+        this.set({
+          location: raw_loc.locality._content + ", " + raw_loc.country._content
+        });
       }
 
       // Based on naming convention of photo title
@@ -59,6 +64,13 @@ $(function(){
       });
 
       return this.spinnerTemplate({ 'spinnerId': 'spinner' + this.id })
+    },
+
+    setupPhotoModal: function(){
+      $('#show-photo-modal .modal-body').html(this.photoModelBodyTemplate({ 'photo':this }));
+      $('#show-photo-modal h3').html(this.get('title'));
+      $('#show-photo-modal-f-button').attr('href',
+            'http://www.flickr.com/photos/cavenagh/' + this.get('id'));
     }
 
   });
@@ -120,6 +132,20 @@ $(function(){
             var photo = Photos.get($(this).data('photo-id'));
             return photo.popoverContents();
           }
+      });
+
+      //Init photo modal
+      $('#show-photo-modal').modal({
+        keyboard: true,
+        backdrop: true
+      });
+
+      $("a[rel='photoPopover']").click(function(e) {
+        e.preventDefault();
+
+        var photo = Photos.get($(this).data('photo-id'));
+        photo.setupPhotoModal();
+        $('#show-photo-modal').modal('show');
       });
 
       return this;

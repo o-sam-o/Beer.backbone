@@ -21,6 +21,7 @@
     <script src="lib/backbone.js"></script>
     <script src="lib/bootstrap-twipsy.js"></script>
     <script src="lib/bootstrap-popover.js"></script>
+    <script src="lib/bootstrap-modal.js"></script>
     <script src="beer.js"></script>
   </head>
 
@@ -55,10 +56,24 @@
       </div>
 
       <footer>
-        <p>&copy; Company 2012</p>
+      <p>&copy; <a href="mailto:cavenaghweb@hotmail.com">Sam Cavenagh</a> 2012</p>
       </footer>
 
     </div> <!-- /container -->
+
+    <!-- sample modal content -->
+    <div id="show-photo-modal" class="modal hide fade">
+      <div class="modal-header">
+        <a href="#" class="close">&times;</a>
+        <h3>Modal Heading</h3>
+      </div>
+      <div class="modal-body">
+        <p>Loading ...</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" id="show-photo-modal-f-button" class="btn primary">Flickr</a>
+      </div>
+    </div>
 
     <!-- Templates -->
 
@@ -91,7 +106,7 @@
         <strong>Description:</strong> <%- photo.get('description') ? photo.get('description') : '-' %>
       </p>
       <p>
-        <strong>Added:</strong>  <%- photo.get('taken').toLocaleTimeString() %> <%- photo.get('taken').toLocaleDateString() %>
+        <strong>Added:</strong>  <%- photo.get('taken').toLocaleTimeString() %>, <%- photo.get('taken').toLocaleDateString() %>
       </p>
       <% if (photo.get('location')) { %>
         <p>
@@ -119,6 +134,11 @@
       </div>
     </script>
 
+    <script type="text/template" id="show-photo-modal-body-template">
+      <div id="modal-photo-container">
+        <img alt="<%- photo.get('title') %>" src="<%- photo.get('url_m') %>"/>
+      </div>
+    </script>
 
   </body>
 </html>

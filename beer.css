@@ -19,3 +19,19 @@ body {
 .centre-spinner {
   margin-left: 110px;
 }
+
+#show-photo-modal .modal-body {
+  max-height: 460px;
+  overflow:scroll;
+}
+
+#modal-photo-container {
+  text-align: center;
+}
+
+#modal-photo-container img {
+  padding: 4px;
+  border: 1px solid #DDD;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
