@@ -15,5 +15,6 @@ TODO
  * Hero
  * Collection Stats
  * Map
+ * Page loading text
  * Stat Graphs
  
