@@ -34,7 +34,9 @@ $(function(){
       if (response.photo.location) {
         var raw_loc = response.photo.location;
         this.set({
-          location: raw_loc.locality._content + ", " + raw_loc.country._content
+          location: raw_loc.locality._content + ", " + raw_loc.country._content,
+          latitude: raw_loc.latitude,
+          longitude: raw_loc.longitude
         });
       }
 
@@ -68,9 +70,36 @@ $(function(){
 
     setupPhotoModal: function(){
       $('#show-photo-modal .modal-body').html(this.photoModelBodyTemplate({ 'photo':this }));
+      $('#show-photo-modal .modal-body .tabs').pills();
       $('#show-photo-modal h3').html(this.get('title'));
       $('#show-photo-modal-f-button').attr('href',
             'http://www.flickr.com/photos/cavenagh/' + this.get('id'));
+
+      if (this.get('latitude')) { 
+        var myLatlng = new google.maps.LatLng(this.get('latitude'), this.get('longitude'));
+        var myOptions = {
+          zoom: 5,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById(this.get('id') + "-map-container"), myOptions);
+
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          title:"Collected"
+        });
+        marker.setMap(map);
+
+        //Map seems to bug out when inited in a tab
+        $('#show-photo-modal .modal-body .tabs').bind('change', function(e){
+          if($(e.target).attr('href') == '#map-tab'){
+            google.maps.event.trigger(map, 'resize');
+            map.setZoom( map.getZoom() );
+            map.setCenter(myLatlng);
+          }
+        });
+      }
     }
 
   });
@@ -135,11 +164,6 @@ $(function(){
       });
 
       //Init photo modal
-      $('#show-photo-modal').modal({
-        keyboard: true,
-        backdrop: true
-      });
-
       $("a[rel='photoPopover']").click(function(e) {
         e.preventDefault();
 
@@ -151,6 +175,16 @@ $(function(){
       return this;
     }
 
+  });
+
+  $('#show-photo-modal').modal({
+    keyboard: true,
+    backdrop: true
+  });
+
+  $('#about-modal').modal({
+    keyboard: true,
+    backdrop: true
   });
 
   window.App = new GatewayView;
