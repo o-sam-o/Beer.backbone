@@ -68,6 +68,7 @@ $(function(){
       return this.spinnerTemplate({ 'spinnerId': 'spinner' + this.id })
     },
 
+    //FIXME this is view code and shouldnt be in a model
     setupPhotoModal: function(){
       $('#show-photo-modal .modal-body').html(this.photoModelBodyTemplate({ 'photo':this }));
       $('#show-photo-modal .modal-body .tabs').pills();
@@ -107,6 +108,15 @@ $(function(){
   window.PhotoSet = Backbone.Collection.extend({
     model: Photo,
 
+    initialize: function() {
+      this._meta = {
+         sortBy: 'date',
+         sortOrder: 'desc'
+      };
+
+      this.setComparator(this.meta('sortBy'), this.meta('sortOrder'));
+    },
+
     url: function(){
       var params = {
         "method"         : 'flickr.photosets.getPhotos',
@@ -123,9 +133,54 @@ $(function(){
       );
     },
 
+    //Source: http://stackoverflow.com/questions/5930656/setting-attributes-on-a-collection-backbone-js
+    meta: function(prop, value) {
+        if (value === undefined) {
+            return this._meta[prop]
+        } else {
+            this._meta[prop] = value;
+        }
+    },
+
     parse: function(response){
       return response.photoset.photo;
     },
+
+    comparatorConfigurable: function(photo, sortField, sortOrder){
+      if (sortField == 'date'){
+        var sortValue = Date.parse(photo.get('datetaken'))*1000;
+      } else if(sortField == 'alpha') {
+        var sortValue = String.fromCharCode.apply(String,
+                          _.map(photo.get("title").toLowerCase().split(""), function (c) {
+                          return c.charCodeAt();
+                        }));
+      }else{
+        throw "Unknown sort field " + sortField;
+      }
+
+
+      if (sortOrder === 'asc') {
+        return sortValue;
+      } else {
+        return -sortValue;
+      }
+    },
+
+
+    setComparator: function(sortField, sortOrder) {
+      console.log("Setting sort order " + sortField + " " + sortOrder);
+      var collection = this;
+      this.comparator = function(photo) {
+        return collection.comparatorConfigurable(photo, sortField, sortOrder);
+      };
+    },
+
+    toggleSortOrder: function(){
+      this.meta('sortOrder', this.meta('sortOrder') === 'asc' ? 'desc' : 'asc');
+      this.setComparator(this.meta('sortBy'), this.meta('sortOrder'));
+      this.sort();
+      this.trigger('refresh');
+    }
 
   });
 
@@ -137,14 +192,21 @@ $(function(){
 
     initialize: function() {
       console.log("Init Gateway View");
-      Photos.fetch({
-        success: this.render
-      });
+      Photos.bind('refresh', this.render, this);
+       Photos.fetch({
+          success: this.render
+       });
+    },
+
+    events: {
+      "click a[rel='photoPopover']": "photoClick"
     },
 
     render: function() {
       console.log("Render Gateway View");
       var template = _.template($('#photo-gateway-template').html());
+      // FIXME change this to construct all HTML and then swap it out
+      this.$('#gateway-photos').html('');
       Photos.each(function(photo, index){
         this.$('#gateway-photos').append(template({
           photo: photo,
@@ -153,6 +215,7 @@ $(function(){
       });
 
       // Add popover to photos
+      // TODO try to configure this with events
       this.$("a[rel=photoPopover]")
         .popover({
           offset: 10,
@@ -163,19 +226,22 @@ $(function(){
           }
       });
 
-      //Init photo modal
-      $("a[rel='photoPopover']").click(function(e) {
+      return this;
+    },
+
+    photoClick: function(e) {
         e.preventDefault();
 
-        var photo = Photos.get($(this).data('photo-id'));
+        var photo = Photos.get($(e.currentTarget).data('photo-id'));
         photo.setupPhotoModal();
         $('#show-photo-modal').modal('show');
-      });
-
-      return this;
     }
 
   });
+
+  window.App = new GatewayView;
+
+  //TODO find a better place to put this stuff (view events?)
 
   $('#show-photo-modal').modal({
     keyboard: true,
@@ -187,6 +253,10 @@ $(function(){
     backdrop: true
   });
 
-  window.App = new GatewayView;
+  $('.topbar').dropdown();
+  $('#sort-order-menu-order-item').click(function(e){
+    e.preventDefault();
+    window.Photos.toggleSortOrder();
+  });
 
 });

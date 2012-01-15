@@ -23,6 +23,7 @@
     <script src="lib/bootstrap-popover.js"></script>
     <script src="lib/bootstrap-modal.js"></script>
     <script src="lib/bootstrap-tabs.js"></script>
+    <script src="lib/bootstrap-dropdown.js"></script>
     <script src="beer.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
   </head>
@@ -36,6 +37,17 @@
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about" data-controls-modal="about-modal">About</a></li>
+          </ul>
+          <ul class="nav secondary-nav">
+            <li class="dropdown">
+              <a href="#" id="sort-order-menu-title" class="dropdown-toggle">Date Added</a>
+              <ul class="dropdown-menu">
+                <li><a class="sort-order-menu-item" data-sort-order="date" href="#">Date Added</a></li>
+                <li><a class="sort-order-menu-item" data-sort-order="alpha" href="#">Alphabetic</a></li>
+                <li class="divider"></li>
+                <li><a id="sort-order-menu-order-item" href="#">Reverse Order</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>

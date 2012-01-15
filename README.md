@@ -9,7 +9,7 @@ WORK IN PROGRESS
 
 TODO
 ----
- * Sort Order
+ * Sort Order - remember in hashbang
  * Slide show
  * About
  * Hero
@@ -17,4 +17,5 @@ TODO
  * Map
  * Page loading text
  * Stat Graphs
- 
+ * New label
+ * Search
