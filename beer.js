@@ -159,7 +159,15 @@ $(function(){
       if (sortOrder === 'asc') {
         return sortValue;
       } else {
-        return -sortValue;
+        if (typeof sortValue === 'string'){
+          return String.fromCharCode.apply(String,
+              _.map(sortValue.split(""), function (c) {
+                  return 0xffff - c.charCodeAt();
+              })
+          );
+        }else{
+          return -sortValue;
+        }
       }
     },
 
@@ -291,6 +299,7 @@ $(function(){
     handleSortMenuClick: function(e) {
       e.preventDefault();
       Photos.setSortBy($(e.currentTarget).data('sort-order'));
+      this.$('#sort-order-menu-title').html($(e.currentTarget).html());
     }
 
   });
