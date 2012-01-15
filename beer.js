@@ -186,12 +186,12 @@ $(function(){
 
   window.Photos = new PhotoSet();
 
-  window.GatewayView = Backbone.View.extend({
+  window.PhotoWallView = Backbone.View.extend({
 
-    el: $("#backbone-beer-app"),
+    el: $("#gateway-content"),
 
     initialize: function() {
-      console.log("Init Gateway View");
+      console.log("Init PhotoWall View");
       Photos.bind('refresh', this.render, this);
        Photos.fetch({
           success: this.render
@@ -203,7 +203,7 @@ $(function(){
     },
 
     render: function() {
-      console.log("Render Gateway View");
+      console.log("Render PhotoWall View");
       var template = _.template($('#photo-gateway-template').html());
       // FIXME change this to construct all HTML and then swap it out
       this.$('#gateway-photos').html('');
@@ -239,24 +239,42 @@ $(function(){
 
   });
 
+  window.GatewayView = Backbone.View.extend({
+
+    el: $("#backbone-beer-app"),
+
+    initialize: function() {
+      this.photoWall = new PhotoWallView;
+      this.render();
+    },
+
+    events: {
+      "click #sort-order-menu-order-item": "handleOrderMenuClick"
+    },
+
+    render: function() {
+      console.log("Render Gateway View");
+
+      $('.topbar').dropdown();
+
+      $('#show-photo-modal').modal({
+        keyboard: true,
+        backdrop: true
+      });
+
+      $('#about-modal').modal({
+        keyboard: true,
+        backdrop: true
+      });
+    },
+
+    handleOrderMenuClick: function(e) {
+      e.preventDefault();
+      window.Photos.toggleSortOrder();
+    }
+
+  });
+
   window.App = new GatewayView;
-
-  //TODO find a better place to put this stuff (view events?)
-
-  $('#show-photo-modal').modal({
-    keyboard: true,
-    backdrop: true
-  });
-
-  $('#about-modal').modal({
-    keyboard: true,
-    backdrop: true
-  });
-
-  $('.topbar').dropdown();
-  $('#sort-order-menu-order-item').click(function(e){
-    e.preventDefault();
-    window.Photos.toggleSortOrder();
-  });
 
 });
