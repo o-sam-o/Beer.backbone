@@ -150,10 +150,7 @@ $(function(){
       if (sortField == 'date'){
         var sortValue = Date.parse(photo.get('datetaken'))*1000;
       } else if(sortField == 'alpha') {
-        var sortValue = String.fromCharCode.apply(String,
-                          _.map(photo.get("title").toLowerCase().split(""), function (c) {
-                          return c.charCodeAt();
-                        }));
+        var sortValue = $.trim(photo.get("title").toLowerCase());
       }else{
         throw "Unknown sort field " + sortField;
       }
@@ -175,11 +172,30 @@ $(function(){
       };
     },
 
-    toggleSortOrder: function(){
-      this.meta('sortOrder', this.meta('sortOrder') === 'asc' ? 'desc' : 'asc');
+    refreshSort: function() {
       this.setComparator(this.meta('sortBy'), this.meta('sortOrder'));
       this.sort();
-      this.trigger('refresh');
+    },
+
+    toggleSortOrder: function(){
+      this.meta('sortOrder', this.meta('sortOrder') === 'asc' ? 'desc' : 'asc');
+      this.refreshSort();
+    },
+
+    setSortBy: function(sortBy){
+      if(this.meta('sortBy') === sortBy){
+        this.toggleSortOrder();
+        return;
+      }
+
+      if(sortBy === 'date'){
+        this.meta('sortOrder', 'desc');
+      } else {
+        this.meta('sortOrder', 'asc');
+      }
+
+      this.meta('sortBy', sortBy);
+      this.refreshSort();
     }
 
   });
@@ -192,10 +208,8 @@ $(function(){
 
     initialize: function() {
       console.log("Init PhotoWall View");
-      Photos.bind('refresh', this.render, this);
-       Photos.fetch({
-          success: this.render
-       });
+      Photos.bind('reset', this.render, this);
+      Photos.fetch();
     },
 
     events: {
@@ -249,7 +263,8 @@ $(function(){
     },
 
     events: {
-      "click #sort-order-menu-order-item": "handleOrderMenuClick"
+      "click #sort-order-menu-order-item": "handleOrderMenuClick",
+      "click .sort-order-menu-item": "handleSortMenuClick"
     },
 
     render: function() {
@@ -271,6 +286,11 @@ $(function(){
     handleOrderMenuClick: function(e) {
       e.preventDefault();
       window.Photos.toggleSortOrder();
+    },
+
+    handleSortMenuClick: function(e) {
+      e.preventDefault();
+      Photos.setSortBy($(e.currentTarget).data('sort-order'));
     }
 
   });
