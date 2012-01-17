@@ -180,30 +180,10 @@ $(function(){
       };
     },
 
-    refreshSort: function() {
+    setSortBy: function(sortBy){
+      this.meta('sortBy', sortBy);
       this.setComparator(this.meta('sortBy'), this.meta('sortOrder'));
       this.sort();
-    },
-
-    toggleSortOrder: function(){
-      this.meta('sortOrder', this.meta('sortOrder') === 'asc' ? 'desc' : 'asc');
-      this.refreshSort();
-    },
-
-    setSortBy: function(sortBy){
-      if(this.meta('sortBy') === sortBy){
-        this.toggleSortOrder();
-        return;
-      }
-
-      if(sortBy === 'date'){
-        this.meta('sortOrder', 'desc');
-      } else {
-        this.meta('sortOrder', 'asc');
-      }
-
-      this.meta('sortBy', sortBy);
-      this.refreshSort();
     }
 
   });
@@ -270,15 +250,12 @@ $(function(){
       this.render();
     },
 
-    events: {
-      "click #sort-order-menu-order-item": "handleOrderMenuClick",
-      "click .sort-order-menu-item": "handleSortMenuClick"
-    },
-
     render: function() {
       console.log("Render Gateway View");
 
       $('.topbar').dropdown();
+
+      this.updateSortMenu();
 
       $('#show-photo-modal').modal({
         keyboard: true,
@@ -291,19 +268,36 @@ $(function(){
       });
     },
 
-    handleOrderMenuClick: function(e) {
-      e.preventDefault();
-      window.Photos.toggleSortOrder();
+    updateSortMenu: function() {
+      console.log("Update sort order");
+      $('#sort-order-menu-title').html(this.sortOrderByDescription());
+      var reverseSortBy = Photos.meta('sortOrder') === 'asc' ? 'desc' : 'asc';
+      $('#sort-order-menu-order-item').attr('href', '#sort/' + Photos.meta('sortBy') + '/' + reverseSortBy);
     },
 
-    handleSortMenuClick: function(e) {
-      e.preventDefault();
-      Photos.setSortBy($(e.currentTarget).data('sort-order'));
-      this.$('#sort-order-menu-title').html($(e.currentTarget).html());
+    sortOrderByDescription: function(){
+      return $("a[data-sort-order='" + Photos.meta('sortBy') + "']").html();
     }
 
   });
 
   window.App = new GatewayView;
+
+  var BeerRouter = Backbone.Router.extend({
+
+    routes: {
+      "sort/:sortBy/:sortOrder": "sort"
+    },
+
+    sort: function(sortBy, sortOrder) {
+      Photos.meta('sortOrder', sortOrder);
+      Photos.setSortBy(sortBy);
+      App.updateSortMenu();
+    }
+
+  });
+
+  var appRouter = new BeerRouter;
+  Backbone.history.start();
 
 });

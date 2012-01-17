@@ -9,12 +9,14 @@ WORK IN PROGRESS
 
 TODO
 ----
- * Sort Order - remember in hashbang
+ * Refactor Photo model to contain no view logic
  * Slide show
  * About
- * Hero
+ * Google analytics
  * Collection Stats
- * Map
+ * Hero
+ * Sort order direction arrow in title bar
+ * Map with all images
  * Page loading text
  * Stat Graphs
  * New label
