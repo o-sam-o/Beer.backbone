@@ -10,10 +10,11 @@ WORK IN PROGRESS
 TODO
 ----
  * Refactor Photo model to contain no view logic
- * Slide show
  * About
  * Google analytics
+ * Launch
  * Collection Stats
+ * Slide show
  * Hero
  * Sort order direction arrow in title bar
  * Map with all images

@@ -178,7 +178,7 @@
           </div>
         </div>
         <div id="details-tab">
-          <%= photo.popoverContents() %>
+          <%= (new PhotoPopoverView(photo)).render() %>
         </div>
         <% if (photo.get('latitude')) { %>
           <div id="map-tab">

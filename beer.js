@@ -5,8 +5,6 @@ $(function(){
 
   window.Photo = Backbone.Model.extend({
 
-    photoPopoverTemplate: _.template($('#photo-popover-content').html()),
-    spinnerTemplate: _.template($('#spinner-template').html()),
     photoModelBodyTemplate: _.template($('#show-photo-modal-body-template').html()),
 
     url: function(){
@@ -50,22 +48,6 @@ $(function(){
       }
 
       return this.attributes
-    },
-
-    popoverContents: function(){
-      if(this.get('details_loaded')){
-        return this.photoPopoverTemplate({ 'photo':this });
-      }
-
-      console.log("Loading " + this.id + " details");
-      var photo = this;
-      this.fetch({
-        success: function(){
-          $('#spinner' + photo.id).replaceWith(photo.popoverContents());
-        }
-      });
-
-      return this.spinnerTemplate({ 'spinnerId': 'spinner' + this.id })
     },
 
     //FIXME this is view code and shouldnt be in a model
@@ -133,7 +115,6 @@ $(function(){
       );
     },
 
-    //Source: http://stackoverflow.com/questions/5930656/setting-attributes-on-a-collection-backbone-js
     meta: function(prop, value) {
         if (value === undefined) {
             return this._meta[prop]
@@ -190,6 +171,33 @@ $(function(){
 
   window.Photos = new PhotoSet();
 
+  window.PhotoPopoverView = Backbone.View.extend({
+
+    photoPopoverTemplate: _.template($('#photo-popover-content').html()),
+    spinnerTemplate: _.template($('#spinner-template').html()),
+
+    initialize: function(photo){
+      this.photo = photo;
+    },
+
+    render: function(){
+      var photoPopoverTemplate = this.photoPopoverTemplate;
+      var photo = this.photo;
+      if(photo.get('details_loaded')){
+        return photoPopoverTemplate({ 'photo': photo });
+      }
+
+      console.log("Loading " + photo.id + " details");
+      photo.fetch({
+        success: function(){
+          $('#spinner' + photo.id).replaceWith(photoPopoverTemplate({ 'photo': photo }));
+        }
+      });
+
+      return this.spinnerTemplate({ 'spinnerId': 'spinner' + photo.id })
+    }
+  });
+
   window.PhotoWallView = Backbone.View.extend({
 
     el: $("#gateway-content"),
@@ -224,7 +232,8 @@ $(function(){
           html: true,
           content: function() {
             var photo = Photos.get($(this).data('photo-id'));
-            return photo.popoverContents();
+            var popoverView = new PhotoPopoverView(photo);
+            return popoverView.render();
           }
       });
 
