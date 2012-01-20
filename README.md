@@ -11,7 +11,8 @@ TODO
 ----
  * About
  * Google analytics
- * Page loading text
+ * Add chrome only banner
+ * Readme
  * Launch
  * Search
  * Collection Stats

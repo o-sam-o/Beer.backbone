@@ -40,3 +40,6 @@ body {
   padding-left: 10px;
 }
 
+#page-loading-container {
+  padding-left: 400px;
+}
