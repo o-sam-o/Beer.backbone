@@ -11,10 +11,10 @@ TODO
 ----
  * About
  * Google analytics
- * Add chrome only banner
  * Readme
  * Launch
  * Search
+ * Add chrome only banner
  * Collection Stats
  * Slide show
  * Hero

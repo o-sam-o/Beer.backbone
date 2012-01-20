@@ -174,9 +174,9 @@ $(function(){
             map.setCenter(myLatlng);
           }
         });
-
-        $('#show-photo-modal').modal('show');
       }
+
+      $('#show-photo-modal').modal('show');
     }
 
   });
