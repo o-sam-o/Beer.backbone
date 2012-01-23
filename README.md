@@ -24,8 +24,6 @@ and mostly works in Firefox, no effort has been made to make it IE compatible.
 
 TODO
 ----
- * Google analytics
- * Launch
  * Search
  * Add chrome only banner
  * Collection Stats
