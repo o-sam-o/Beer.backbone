@@ -234,6 +234,8 @@ $(function(){
         }));
       });
 
+      $('#bottle-count').html(Photos.size());
+
       // Add popover to photos
       // TODO try to configure this with events
       this.$("a[rel=photoPopover]")

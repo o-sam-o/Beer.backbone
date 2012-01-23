@@ -56,8 +56,7 @@
 
       <div class="hero-unit">
         <h1>Beer, Beer, Beer!</h1>
-        <p>I enjoy beer and I always wanted to collection something.  Photos of beer bottles seemed like a good fit, 
-           it takes up no space and was easy to get started.</p>
+        <p id="hero-text">My photo collection of beer bottles. Which currently contains <span id="bottle-count">?</span> photos.</p>
       </div>
 
       <div id="gateway-content">
@@ -107,10 +106,28 @@
         <h3>About</h3>
       </div>
       <div class="modal-body">
-        <p>TODO write about</p>
+        <h4>The Premise</h4>
+        <p>Create a photographic collection of beer bottles (ideally that I have drunk).
+           While I try to ensure the label is readable, image quality is not a priority.
+           Most photos are taken with my phone and often in poor lighting conditions.
+           The same beer is allowed to feature multiple times in the collection if there is some kind
+           of variation in the bottle.</p>
+        <h4>The Tech</h4>
+        <p>The collection is stored on <a href="http://www.flickr.com/photos/cavenagh/sets/72157625277593652/">Flickr</a> and this
+        site has been built on top of their <a href="http://www.flickr.com/services/api/">REST API</a>.  The aim was to build a rich
+        dynamic site with no server side code.  
+        This is achieved with the use of the <a href="http://documentcloud.github.com/backbone/">Backbone.js</a> MVC framework and
+        <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> for the look and feel.  
+        This site has been developed for <a href="https://www.google.com/chrome/">Chrome</a> 
+        and mostly works in <a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>, 
+        no effort has been made to make it IE compatible.</p>
+        <h4>Contact</h4>
+        <p>Feel free to <a href="mailto:cavenaghweb@hotmail.com">email me</a></p>
       </div>
       <div class="modal-footer">
-        <a href="http://o-sam-o.github.com" class="btn primary">More</a>
+        <a href="http://o-sam-o.github.com" class="btn primary">Other Sites</a>
+        <a href="http://www.flickr.com/photos/cavenagh" class="btn">More Photos</a>
+        <a href="https://github.com/o-sam-o/Beer.backbone" class="btn">Source</a>
       </div>
     </div>
 
